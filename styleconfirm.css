@@ -68,9 +68,15 @@ button:hover {
 }
 
 /* Status message styles */
-#status {
-  font-size: 16px;
+#status1 {
+  font-size: 20px;
   color: green;
+  font-weight: bold;
+}
+#status2 {
+  font-size: 20px;
+  color: red;
+  font-weight: bold;
 }
 span {
   color: #007bff;
