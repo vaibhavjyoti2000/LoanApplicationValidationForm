@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loan Confirmation</title>
+    <link rel="stylesheet" href="styleconfirm.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2 id="loan">Loan Confirmation</h2>
+      <br /><br />
+      <p>Dear <span id="firstName"></span>,</p>
+      <br />
+      <p>
+        Thank you for your inquiry. A 5 digit verification number has been sent
+        to your email: <span id="email"></span>, please enter it in the
+        following box and submit for confirmation:
+      </p>
+      <br />
+      <form id="otpForm" onsubmit="return validateOTP()">
+        <label for="otp">OTP:</label>
+        <input
+          type="text"
+          id="otp"
+          name="otp"
+          placeholder="enter otp"
+          required
+        />
+        <span id="otpError" class="error"></span>
+        <button type="submit" id="btn">Validate</button>
+      </form>
+      <br />
+      <p id="status"></p>
+    </div>
+
+    <script>
+      debugger;
+      const generatedOTP = Math.floor(10000 + Math.random() * 50000);
+      // alert(generatedOTP);
+      console.log("OTP Details: " + generatedOTP);
+
+      var loanDetails = JSON.parse(localStorage.getItem("loanDetails"));
+      document.getElementById("firstName").textContent =
+        loanDetails[0].fullname;
+      document.getElementById("email").textContent = loanDetails[0].email;
+      let attempts = 0;
+      function validateOTP() {
+        const otp = document.getElementById("otp").value;
+        const otpError = document.getElementById("otpError");
+        attempts++;
+
+        if (otp == generatedOTP) {
+          document.getElementById("status").textContent =
+            "Validation Successful!";
+          document.getElementById("otpForm").style.display = "none";
+          return false;
+        } else {
+          if (attempts >= 3) {
+            document.getElementById("status").textContent =
+              "Validation Failed!";
+            document.getElementById("otpForm").style.display = "none";
+            return false;
+          }
+          otpError.textContent = "Invalid OTP. Please try again.";
+          document.getElementById("otp").value = "";
+          return false;
+        }
+      }
+    </script>
+  </body>
+</html>

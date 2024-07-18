@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loan Application form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <form id="loanForm" onsubmit="return SubmitData()">
+        <h2 id="loan">Loan Application Form</h2>
+        <label for="fullName">Full Name</label>
+        <input
+          type="text"
+          id="fullName"
+          name="fullName"
+          onchange="fullNameValidation()"
+          required
+        /><br />
+        <span id="fullNameError" class="error"></span>
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          onchange="emailValidation()"
+          required
+        /><br />
+        <span id="emailError" class="error"></span>
+        <label for="pan">PAN</label>
+        <input
+          type="text"
+          id="pan"
+          name="pan"
+          onchange="panValidation()"
+          required
+        /><br />
+        <span id="panError" class="error"></span>
+        <label for="loanAmount">Loan Amount</label>
+        <input
+          type="number"
+          id="loanAmount"
+          name="loanAmount"
+          onchange="loanAmountValidation()"
+          required
+        /><br />
+        <span id="loanAmountError" class="error"></span>
+        <p id="amountInWords"></p>
+        <br />
+        <button type="submit" id="btn">Submit</button>
+      </form>
+    </div>
+    <script>
+      // FullName validation
+      function fullNameValidation() {
+        var fullName = document.getElementById("fullName").value;
+        var fullNameError = document.getElementById("fullNameError");
+        var namePattern = /^[a-zA-Z\s]{4,}\s[a-zA-Z\s]{4,}$/;
+        if (!namePattern.test(fullName)) {
+          fullNameError.textContent =
+            "Full Name must have at least two words, each with at least 4 characters.";
+          return false;
+        } else {
+          fullNameError.textContent = "";
+        }
+      }
+
+      // Email Validation
+      function emailValidation() {
+        var emailName = document.getElementById("email").value;
+        var emailError = document.getElementById("emailError");
+        var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+        if (!emailPattern.test(emailName)) {
+          emailError.textContent = "Please enter valid emailId";
+          return false;
+        } else {
+          emailError.textContent = "";
+        }
+      }
+
+      // PAN Number Validation
+      function panValidation() {
+        var pan = document.getElementById("pan").value;
+        var panError = document.getElementById("panError");
+        var panPattern = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+        if (!panPattern.test(pan)) {
+          panError.textContent = "PAN must be in the format ABCDE1234F.";
+          return false;
+        } else {
+          panError.textContent = "";
+        }
+      }
+
+      // LoanAmount Validation
+      function loanAmountValidation() {
+        var loanAmount = document.getElementById("loanAmount").value;
+        var loanAmountError = document.getElementById("loanAmountError");
+        if (loanAmount.length > 9) {
+          loanAmountError.textContent =
+            "Loan Amount must be a maximum of 9 digits.";
+          return false;
+        } else {
+          loanAmountError.textContent = "";
+          // document.getElementById("amountInWords").textContent = convertNumberToWords(loanAmount) + " Rs.";
+          var loanAmountInWord = test(loanAmount);
+          amountInWords.textContent = loanAmountInWord;
+          var emi = calculateEMI(loanAmount, 8.5, 15);
+          document.getElementById("amountInWords").textContent =
+            "Estimated EMI: " +
+            emi.toFixed(2) +
+            " Rs." +
+            "   " +
+            loanAmountInWord;
+        }
+      }
+
+      // Submit Data
+      function SubmitData() {
+        var data = [];
+        var objectData = {
+          fullname: document.getElementById("fullName").value,
+          email: document.getElementById("email").value,
+          Pan: document.getElementById("pan").value,
+          loanAmount: document.getElementById("loanAmount").value,
+        };
+        data.push(objectData);
+        localStorage.setItem("loanDetails", JSON.stringify(data));
+        window.location.assign("./confirm.html");
+        return false;
+      }
+
+      //   Calculate EMI
+
+      function calculateEMI(principal, rate, tenure) {
+        rate = rate / (12 * 100);
+        tenure = tenure * 12;
+        return (
+          (principal * rate * Math.pow(1 + rate, tenure)) /
+          (Math.pow(1 + rate, tenure) - 1)
+        );
+      }
+
+      // Disply number in text
+      function test(n) {
+        if (n < 0) return false;
+        single_digit = [
+          "",
+          "One",
+          "Two",
+          "Three",
+          "Four",
+          "Five",
+          "Six",
+          "Seven",
+          "Eight",
+          "Nine",
+        ];
+        double_digit = [
+          "Ten",
+          "Eleven",
+          "Twelve",
+          "Thirteen",
+          "Fourteen",
+          "Fifteen",
+          "Sixteen",
+          "Seventeen",
+          "Eighteen",
+          "Nineteen",
+        ];
+        below_hundred = [
+          "Twenty",
+          "Thirty",
+          "Forty",
+          "Fifty",
+          "Sixty",
+          "Seventy",
+          "Eighty",
+          "Ninety",
+        ];
+        if (n === 0) return "Zero";
+        function translate(n) {
+          word = "";
+          if (n < 10) {
+            word = single_digit[n] + " ";
+          } else if (n < 20) {
+            word = double_digit[n - 10] + " ";
+          } else if (n < 100) {
+            rem = translate(n % 10);
+            word = below_hundred[(n - (n % 10)) / 10 - 2] + " " + rem;
+          } else if (n < 1000) {
+            word =
+              single_digit[Math.trunc(n / 100)] +
+              " Hundred " +
+              translate(n % 100);
+          } else if (n < 1000000) {
+            word =
+              translate(parseInt(n / 1000)).trim() +
+              " Thousand " +
+              translate(n % 1000);
+          } else if (n < 1000000000) {
+            word =
+              translate(parseInt(n / 1000000)).trim() +
+              " Million " +
+              translate(n % 1000000);
+          } else {
+            word =
+              translate(parseInt(n / 1000000000)).trim() +
+              " Billion " +
+              translate(n % 1000000000);
+          }
+          return word;
+        }
+        result = translate(n);
+        return result.trim() + ".";
+      }
+    </script>
+  </body>
+</html>

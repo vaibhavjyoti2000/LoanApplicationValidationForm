@@ -1,0 +1,78 @@
+/* Container styles */
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+/* Header styles */
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+/* Paragraph styles */
+p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* Form styles */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin: 10px 0 5px 0;
+  font-weight: bold;
+  color: #555;
+}
+
+/* Input field styles */
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+/* Button styles */
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Error message styles */
+.error {
+  color: red;
+  font-size: 14px;
+}
+
+/* Status message styles */
+#status {
+  font-size: 16px;
+  color: green;
+}
+span {
+  color: #007bff;
+  font-weight: bold;
+}
