@@ -31,19 +31,16 @@
         <button type="submit" id="btn">Validate</button>
       </form>
       <br />
-      <p id="status1"></p>
-      <p id="status2"></p>
+      <p id="status"></p>
     </div>
 
     <script>
       debugger;
       const generatedOTP = Math.floor(10000 + Math.random() * 50000);
       // alert(generatedOTP);
-      console.log("OTP Sent: " + generatedOTP);
+      console.log("OTP Details: " + generatedOTP);
 
       var loanDetails = JSON.parse(localStorage.getItem("loanDetails"));
-      alert("Genrate OTP : " + " " + generatedOTP);
-
       document.getElementById("firstName").textContent =
         loanDetails[0].fullname;
       document.getElementById("email").textContent = loanDetails[0].email;
@@ -54,13 +51,13 @@
         attempts++;
 
         if (otp == generatedOTP) {
-          document.getElementById("status1").textContent =
+          document.getElementById("status").textContent =
             "Validation Successful!";
           document.getElementById("otpForm").style.display = "none";
           return false;
         } else {
           if (attempts >= 3) {
-            document.getElementById("status2").textContent =
+            document.getElementById("status").textContent =
               "Validation Failed!";
             document.getElementById("otpForm").style.display = "none";
             return false;
